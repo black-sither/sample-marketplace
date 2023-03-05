@@ -3,9 +3,9 @@ import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import User from '../db/models/User'
 import bcrypt from "bcrypt";
 
-const router = Router();
+const authRrouter = Router();
 
-router.post('/register', async (req: Request, res: Response) => {
+authRrouter.post('/register', async (req: Request, res: Response) => {
     // TODO implement register logic
     try {
     const {username,password} = req.body;
@@ -19,8 +19,6 @@ router.post('/register', async (req: Request, res: Response) => {
       return res.status(409).send("User Already Exist. Please Login");
     }
     const encryptedPassword = await bcrypt.hash(password, 10);
-    console.log(encryptedPassword);
-    console.log(password);
 
     // Create user in our database
     await User.create({
@@ -43,7 +41,7 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 })
 
-router.post('/login', async (req: Request, res: Response) => {
+authRrouter.post('/login', async (req: Request, res: Response) => {
     try {
         // Get user input
         const {username,password} = req.body;
@@ -78,4 +76,4 @@ router.post('/login', async (req: Request, res: Response) => {
       }
 })
 
-export default router;
+export default authRrouter;

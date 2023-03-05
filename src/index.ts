@@ -4,12 +4,13 @@ import helmet from 'helmet';
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import auth from './routes/auth';
-import User from './db/models/User'
+import authRrouter from './routes/auth';
+import buyerRouter from './routes/buyer'
+import auth from './lib/middlewares/Auth'
 import dbinit from './db/init'
 
 const app :Express = express();
-
+const authStratergy:string = process.env.AUTH_STRATERGY || "jwt" as string;
 // set security HTTP headers
 app.use(helmet());
 
@@ -22,8 +23,8 @@ app.use(express.urlencoded({ extended: true }));
 // api endpoints
 
 // auth
-app.use('/api/auth', auth);
-
+app.use('/api/auth', authRrouter);
+app.use('/api/buyer',auth[authStratergy], buyerRouter);
 
 dbinit().then(()=> {
  app.listen(8080, () => console.log('Example app listening on port 8080!'));

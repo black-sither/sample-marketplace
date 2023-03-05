@@ -1,6 +1,12 @@
-import express, { Express } from 'express';
+import express, { Express,Request,Response } from 'express';
 import helmet from 'helmet';
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import auth from './routes/auth';
+import User from './db/models/User'
+import dbinit from './db/init'
 
 const app :Express = express();
 
@@ -18,4 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 // auth
 app.use('/api/auth', auth);
 
-app.listen(8080, () => console.log('Example app listening on port 3000!'));
+
+dbinit().then(()=> {
+ app.listen(8080, () => console.log('Example app listening on port 8080!'));
+})

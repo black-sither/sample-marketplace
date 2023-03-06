@@ -1,21 +1,21 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
 
-interface UserAttributes {
+interface ProductAttributes {
   id: number;
-  username: string;
-  password: string;
+  name: string;
+  price: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
 }
-export type UserInput = Optional<UserAttributes, 'id'>
-export type UserOuput = Required<UserAttributes>
+export type ProductInput = Optional<ProductAttributes, 'id'>
+export type ProductOuput = Required<ProductAttributes>
 
-class User extends Model<UserAttributes, UserInput> implements UserAttributes {
+class Product extends Model<ProductAttributes, ProductInput> implements ProductAttributes {
     public id!: number
-    public username!: string
-    public password!: string
+    public name!: string
+    public price!: number
   
     // timestamps!
     public readonly createdAt!: Date;
@@ -23,18 +23,17 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     public readonly deletedAt!: Date;
   }
   
-  User.init({
+  Product.init({
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
     },
-    username: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
     },
-    password: {
-      type: DataTypes.STRING,
+    price: {
+      type: DataTypes.FLOAT.UNSIGNED,
       allowNull: false,
     },
   }, {
@@ -43,4 +42,4 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     paranoid: true
   })
   
-  export default User
+  export default Product

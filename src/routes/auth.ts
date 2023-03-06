@@ -1,14 +1,13 @@
 import { Router, Request, Response } from 'express';
-import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import User from '../db/models/User'
 import bcrypt from "bcrypt";
 
 const authRrouter = Router();
 
 authRrouter.post('/register', async (req: Request, res: Response) => {
-    // TODO implement register logic
     try {
-    const {username,password} = req.body;
+    const {username,password,isSeller} = req.body;
     const oldUser = await User.findOne({
         where: {
           username: username,
@@ -21,11 +20,12 @@ authRrouter.post('/register', async (req: Request, res: Response) => {
     const encryptedPassword = await bcrypt.hash(password, 10);
 
     // Create user in our database
-    await User.create({
+    const user = await User.create({
         username,
         password: encryptedPassword,
       });
     
+    if(isSeller || isSeller === "yes") user.createSeller();
     const private_key:Secret = process.env.TOKEN_KEY as string;
     const token = jwt.sign(
     { username: username },

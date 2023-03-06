@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
 
 interface UserAttributes {
-  id: number;
+  id: string;
   username: string;
   password: string;
   createdAt?: Date;
@@ -13,7 +13,7 @@ export type UserInput = Optional<UserAttributes, 'id'>
 export type UserOuput = Required<UserAttributes>
 
 class User extends Model<UserAttributes, UserInput> implements UserAttributes {
-    public id!: number
+    public id!: string
     public username!: string
     public password!: string
   

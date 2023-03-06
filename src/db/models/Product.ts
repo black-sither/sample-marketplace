@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
 
 interface ProductAttributes {
-  id: number;
+  id: string;
   name: string;
   price: number;
   createdAt?: Date;
@@ -13,7 +13,7 @@ export type ProductInput = Optional<ProductAttributes, 'id'>
 export type ProductOuput = Required<ProductAttributes>
 
 class Product extends Model<ProductAttributes, ProductInput> implements ProductAttributes {
-    public id!: number
+    public id!: string
     public name!: string
     public price!: number
   

@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
 
 interface ProductAttributes {
-  id: string;
+  id: number;
   name: string;
   price: number;
   createdAt?: Date;
@@ -13,7 +13,7 @@ export type ProductInput = Optional<ProductAttributes, 'id'>
 export type ProductOuput = Required<ProductAttributes>
 
 class Product extends Model<ProductAttributes, ProductInput> implements ProductAttributes {
-    public id!: string
+    public id!: number
     public name!: string
     public price!: number
   
@@ -25,8 +25,9 @@ class Product extends Model<ProductAttributes, ProductInput> implements ProductA
   
   Product.init({
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
+      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING,

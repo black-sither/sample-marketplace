@@ -1,8 +1,15 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
 
+import Seller from './Seller'
+
+import {
+  HasOneCreateAssociationMixin
+} from 'sequelize';
+
+
 interface UserAttributes {
-  id: string;
+  id: number;
   username: string;
   password: string;
   createdAt?: Date;
@@ -13,10 +20,11 @@ export type UserInput = Optional<UserAttributes, 'id'>
 export type UserOuput = Required<UserAttributes>
 
 class User extends Model<UserAttributes, UserInput> implements UserAttributes {
-    public id!: string
+    public id!: number
     public username!: string
     public password!: string
   
+    declare public createSeller: HasOneCreateAssociationMixin<Seller>;
     // timestamps!
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -25,7 +33,8 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
   
   User.init({
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
       primaryKey: true,
     },
     username: {

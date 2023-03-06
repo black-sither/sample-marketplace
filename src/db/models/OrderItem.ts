@@ -34,14 +34,14 @@ class OrderItem extends Model<OrderItemAttributes, OrderItemInput> implements Or
       }
     },
     ProductId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
       references: {
         model: Product,
         key: 'id'
       }
     },
     OrderId: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
       references: {
         model: Order,
         key: 'id'

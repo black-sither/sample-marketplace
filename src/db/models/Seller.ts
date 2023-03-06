@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
 
 interface SellerAttributes {
-  id: string;
+  id: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
@@ -11,8 +11,7 @@ export type SellerInput = Optional<SellerAttributes, 'id'>
 export type SellerOuput = Required<SellerAttributes>
 
 class Seller extends Model<SellerAttributes, SellerInput> implements SellerAttributes {
-    public id!: string
-  
+    public id!: number
     // timestamps!
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -21,7 +20,8 @@ class Seller extends Model<SellerAttributes, SellerInput> implements SellerAttri
   
   Seller.init({
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
       primaryKey: true,
     },
   }, {

@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
 
 interface OrderAttributes {
-  id: string;
+  id: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
@@ -11,7 +11,7 @@ export type OrderInput = Optional<OrderAttributes, 'id'>
 export type OrderOuput = Required<OrderAttributes>
 
 class Order extends Model<OrderAttributes, OrderInput> implements OrderAttributes {
-    public id!: string
+    public id!: number
   
     // timestamps!
     public readonly createdAt!: Date;
@@ -21,7 +21,8 @@ class Order extends Model<OrderAttributes, OrderInput> implements OrderAttribute
   
   Order.init({
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
       primaryKey: true,
     },
   }, {

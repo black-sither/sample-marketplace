@@ -35,6 +35,9 @@ class Product extends Model<ProductAttributes, ProductInput> implements ProductA
     },
     price: {
       type: DataTypes.FLOAT.UNSIGNED,
+      validate: {
+        min: 0
+      },
       allowNull: false,
     },
   }, {

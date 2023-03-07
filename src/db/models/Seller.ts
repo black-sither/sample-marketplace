@@ -1,6 +1,12 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
 
+import {
+  HasOneCreateAssociationMixin
+} from 'sequelize';
+import User from './User';
+
+
 interface SellerAttributes {
   id: number;
   createdAt?: Date;
@@ -12,6 +18,8 @@ export type SellerOuput = Required<SellerAttributes>
 
 class Seller extends Model<SellerAttributes, SellerInput> implements SellerAttributes {
     public id!: number
+    
+    declare public getUser: HasOneCreateAssociationMixin<User>;
     // timestamps!
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;

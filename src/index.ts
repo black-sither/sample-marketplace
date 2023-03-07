@@ -5,7 +5,8 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import authRrouter from './routes/auth';
-import buyerRouter from './routes/buyer'
+import buyerRouter from './routes/buyer';
+import sellerRouter from './routes/seller';
 import auth from './lib/middlewares/Auth'
 import dbinit from './db/init'
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 // auth
 app.use('/api/auth', authRrouter);
 app.use('/api/buyer',auth[authStratergy], buyerRouter);
+app.use('/api/seller',auth[authStratergy], sellerRouter);
 
 dbinit().then(()=> {
  app.listen(8080, () => console.log('Example app listening on port 8080!'));

@@ -25,6 +25,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     public password!: string
   
     declare public createSeller: HasOneCreateAssociationMixin<Seller>;
+    declare public getSeller: HasOneCreateAssociationMixin<Seller>;
     // timestamps!
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;

@@ -3,6 +3,7 @@ import sequelizeConnection from '../config'
 
 interface OrderAttributes {
   id: number;
+  total: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
@@ -12,6 +13,7 @@ export type OrderOuput = Required<OrderAttributes>
 
 class Order extends Model<OrderAttributes, OrderInput> implements OrderAttributes {
     public id!: number
+    public total!: number
   
     // timestamps!
     public readonly createdAt!: Date;
@@ -25,6 +27,10 @@ class Order extends Model<OrderAttributes, OrderInput> implements OrderAttribute
       autoIncrement: true,
       primaryKey: true,
     },
+    total: {
+      type: DataTypes.FLOAT.UNSIGNED,
+      allowNull: false,
+    }
   }, {
     timestamps: true,
     sequelize: sequelizeConnection,

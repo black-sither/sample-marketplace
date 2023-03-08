@@ -19,7 +19,6 @@ const createoOrder = async (req, res) => {
         const { id } = req.user;
         const { items } = req.body;
         const itemIds = items.map(item => item.id)
-        console.log(itemIds);
         const createdOrder = await sequelizeConnection.transaction(async (t) => {
             const productResult = await Product.findAll({
                 attributes: ['id', 'price'], where: {
@@ -37,7 +36,6 @@ const createoOrder = async (req, res) => {
 
             // Check if any invalid/removed item id is supplied
             const unavailableItems = itemIds.filter((itemId) => !sellerItems[itemId])
-            console.log(unavailableItems)
             if (unavailableItems.length > 0)
                 throw new ValidationError('One/More items not present with Seller', 400)
             const totalPrice = items.reduce((acc, item) => {

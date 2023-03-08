@@ -44,7 +44,6 @@ const createCatalog = async (req, res) => {
 const getOrders = async (req, res) => {
     try {
         const { id } = req.user;
-        console.log(id);
         const seller = await Seller.findOne({
             where: {
                 UserId: id,

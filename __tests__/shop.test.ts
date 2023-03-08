@@ -150,13 +150,7 @@ describe("Invalid Requests", () => {
       items : testSeller.items
     }).set('Authorization', `Bearer ${testUser.token}`)
     expect(res.status).toEqual(403);
-    expect(res.body).toHaveProperty("catalog")
-    expect(Array.isArray(res.body.catalog)).toBe(true)
-    res.body.catalog.map((item: any) =>{
-      expect(item).toHaveProperty("name")
-      expect(item).toHaveProperty("productId")
-      expect(item).toHaveProperty("price")
-    }); 
+    expect(res.body.error).toBe('Only Sellers are allowed to create catalog')
   });
 });
 

@@ -23,7 +23,6 @@ const createCatalog = async (req, res) => {
         });
         if (!user.Seller)
             throw new ValidationError('Only Sellers are allowed to create catalog', 403)
-        // return res.status(403).json({ error: "Only Sellers are allowed to create catalog" });
         const sellerId = user.Seller.id;
         const products = items.map(item => {
             return { SellerId: sellerId, name: item.name, price: item.price }
@@ -36,7 +35,6 @@ const createCatalog = async (req, res) => {
             return { productId: product.id, name: product.name, price: product.price }
         })
         return successResponse(201, { catalog: output }, res);
-        // return res.status(201).json({ catalog: output });
     } catch (err) {
         console.log(err)
         return errorResponse(err, res);
@@ -68,7 +66,6 @@ const getOrders = async (req, res) => {
             }
         })
         return successResponse(200, output, res);
-        // return res.status(200).send(output);
     } catch (err) {
         console.log(err)
         return errorResponse(err, res);

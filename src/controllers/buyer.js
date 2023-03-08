@@ -14,7 +14,7 @@ import { successResponse, errorResponse } from '../lib/apiout';
 
 
 const createoOrder = async (req, res) => {
-    // TODO add validation for quantity in itemsList
+    // TODO add validation for id and quantity in itemsList
     try {
         const { id } = req.user;
         const { items } = req.body;
@@ -55,9 +55,7 @@ const createoOrder = async (req, res) => {
 
             return { orderId: order.id, totalPrice };
         });
-        // const output = createdOrder.map(())
         return successResponse(201, { order: createdOrder }, res);
-        // return res.status(201).json({ order: createdOrder });
     } catch (err) {
         console.log(err)
         return errorResponse(err, res);
@@ -66,13 +64,11 @@ const createoOrder = async (req, res) => {
 
 const listSellers = async (req, res) => {
     try {
-        // console.log(apiout);
         const sellers = await Seller.findAll({ include: User });
         const sellerNames = sellers.map((seller) => {
             return { name: seller.User.username, sellerId: seller.id }
         })
         return successResponse(200, { sellers: sellerNames }, res);
-        // return res.status(200).json({ sellers: sellerNames });
     } catch (err) {
         console.log(err)
         return errorResponse(err, res);
@@ -86,7 +82,6 @@ const getSellerCatalog = async (req, res) => {
             return { "name": product.name, "price": product.price, "productId": product.id }
         })
         return successResponse(200, { catalog: productsresults }, res);
-        // return res.status(200).json({ catalog: productsresults });
     } catch (err) {
         console.log(err)
         return errorResponse(err, res);

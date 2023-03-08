@@ -1,6 +1,5 @@
 import { Dialect, Sequelize } from 'sequelize'
 
-// console.log(`DB_NAME : ${process.env.DB_NAME}`)
 const dbName = process.env.DB_NAME as string
 const dbUser = process.env.DB_USER as string
 const dbHost = process.env.DB_HOST

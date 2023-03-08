@@ -1,4 +1,4 @@
-// Note : Atests are assumed to be run on a dummy/ephemeral database instance
+// Note : tests are assumed to be run on a dummy/ephemeral database instance
 
 import request from "supertest";
 import * as dotenv from "dotenv";

@@ -1,14 +1,11 @@
-import { Router, Request, Response } from 'express';
-const router = Router();
+import { Router } from 'express';
 
-router.post('/register', (req: Request, res: Response) => {
-    // TODO implement register logic
-    return res.status(201).send({ register: true });
-})
+const authRrouter = Router();
 
-router.post('/login', (req: Request, res: Response) => {
-    // TODO implement login logic
-    return res.status(200).send({ login: true });
-})
+import { register,login } from '../controllers/auth';
 
-export default router;
+authRrouter.post('/register', register)
+
+authRrouter.post('/login', login)
+
+export default authRrouter;

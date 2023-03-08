@@ -28,6 +28,11 @@ app.use('/api/auth', authRrouter);
 app.use('/api/buyer',auth[authStratergy], buyerRouter);
 app.use('/api/seller',auth[authStratergy], sellerRouter);
 
+app.get('/hello',(req,res) =>{return res.status(200).send({"ko":"ok"})})
+
 dbinit().then(()=> {
- app.listen(8080, () => console.log('Example app listening on port 8080!'));
+const port = process.env.PORT || 8080;
+ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 })
+
+export default app;

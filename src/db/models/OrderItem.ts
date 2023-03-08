@@ -28,20 +28,20 @@ class OrderItem extends Model<OrderItemAttributes, OrderItemInput> implements Or
   
   OrderItem.init({
     quantity: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       validate: {
         min: 1
       }
     },
     ProductId: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       references: {
         model: Product,
         key: 'id'
       }
     },
     OrderId: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       references: {
         model: Order,
         key: 'id'

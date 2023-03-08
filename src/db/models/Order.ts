@@ -23,13 +23,16 @@ class Order extends Model<OrderAttributes, OrderInput> implements OrderAttribute
   
   Order.init({
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
     total: {
-      type: DataTypes.FLOAT.UNSIGNED,
+      type: DataTypes.FLOAT,
       allowNull: false,
+      validate: {
+        min: 0
+      },
     }
   }, {
     timestamps: true,

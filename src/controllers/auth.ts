@@ -33,10 +33,11 @@ const register = async (req: Request, res: Response) => {
         expiresIn: "2h",
     }
     );
-    return res.status(201).json({ token });
+    return res.status(201).json({ token,id:user.id });
     }
     catch(err){
         console.log(err);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
@@ -58,7 +59,6 @@ const login = async (req: Request, res: Response) => {
     
         if (user && (await bcrypt.compare(password, user.password))) {
         const private_key:Secret = process.env.TOKEN_KEY as string;
-          // Create token
           const token = jwt.sign(
             { username: username,id: user.id},
             private_key,
@@ -66,12 +66,12 @@ const login = async (req: Request, res: Response) => {
               expiresIn: "2h",
             }
           );
-          // user
           return res.status(200).json({ token });
         }
         return res.status(400).send("Invalid Credentials");
       } catch (err) {
         console.log(err);
+        return res.status(500).json({ error: "Internal Server Error" });
       }
 }
 

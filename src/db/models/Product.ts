@@ -25,7 +25,7 @@ class Product extends Model<ProductAttributes, ProductInput> implements ProductA
   
   Product.init({
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
@@ -34,7 +34,7 @@ class Product extends Model<ProductAttributes, ProductInput> implements ProductA
       allowNull: false,
     },
     price: {
-      type: DataTypes.FLOAT.UNSIGNED,
+      type: DataTypes.FLOAT,
       validate: {
         min: 0
       },

@@ -17,6 +17,8 @@ const createCatalog = async (req, res) => {
             },
             include: Seller
         });
+        if (!user.Seller)
+            return res.status(403).json({ error: "Only Sellers are allowed to create catalog" });
         const sellerId = user.Seller.id;
         const products = items.map(item => {
             return { SellerId: sellerId, name: item.name, price: item.price }
@@ -25,11 +27,13 @@ const createCatalog = async (req, res) => {
             const productResult = await Product.bulkCreate(products, { transaction: t });
             return productResult;
         });
-        console.log(result);
-        return res.status(201).json({ result });
-    }
-    catch (err) {
+        const output = result.map(product => {
+            return { productId: product.id, name: product.name, price: product.price }
+        })
+        return res.status(201).json({ catalog: output });
+    } catch (err) {
         console.log(err);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
@@ -48,9 +52,19 @@ const getOrders = async (req, res) => {
                 SellerId: seller.id,
             }
         });
-        return res.status(200).send(orderList);
+        const output = orderList.map(order => {
+            return {
+                orderId: order.id,
+                totalPrice: order.total,
+                userId: order.UserId,
+                sellerId: order.SellerId,
+                placedOn: order.ceratedAt
+            }
+        })
+        return res.status(200).send(output);
     } catch (err) {
         console.log(err);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 

@@ -34,7 +34,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
   
   User.init({
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -50,7 +50,7 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
   }, {
     timestamps: true,
     sequelize: sequelizeConnection,
-    paranoid: true
+    paranoid: true,
   })
   
   export default User

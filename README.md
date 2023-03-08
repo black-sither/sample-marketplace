@@ -17,8 +17,6 @@ AUTH_STRATERGY=jwt
 In root of the folder structure execute ` docker-compose up `
 which will bring up the postgres docker container and seed the `shop` databse in it 
 
-**Note**: database seeding only happens when the environment variable `NODE_ENV` is set to `develpoment`
-
 Run `npm i` in root directory to install required node modules
 
 You can then start the application by running either `npm start` or `npm run start:dev` in the root directory of the folder.

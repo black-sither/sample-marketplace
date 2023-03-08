@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Request,Response,NextFunction,Express } from 'express';
 import helmet from 'helmet';
 
 import * as dotenv from "dotenv";
@@ -7,7 +7,7 @@ dotenv.config();
 import authRrouter from './routes/auth';
 import buyerRouter from './routes/buyer';
 import sellerRouter from './routes/seller';
-import auth from './lib/middlewares/Auth'
+import auth from './lib/middlewares/authMiddleware'
 import dbinit from './db/init'
 
 const app :Express = express();
@@ -25,10 +25,25 @@ app.use(express.urlencoded({ extended: true }));
 
 // auth
 app.use('/api/auth', authRrouter);
+
+// business logic
 app.use('/api/buyer',auth[authStratergy], buyerRouter);
 app.use('/api/seller',auth[authStratergy], sellerRouter);
 
-app.get('/hello',(req,res) =>{return res.status(200).send({"ko":"ok"})})
+// universal error handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err);
+  
+    // Set a default status code of 500 if not already set
+    if (!res.statusCode || res.statusCode < 400) {
+      res.status(500);
+    }
+  
+    // Return a JSON response with the error message and stack trace
+    res.json({
+        error: "Internal Server Error"
+    });
+  });
 
 dbinit().then(()=> {
 const port = process.env.PORT || 8080;

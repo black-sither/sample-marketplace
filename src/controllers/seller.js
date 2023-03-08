@@ -6,11 +6,15 @@ import User from '../db/models/User'
 import Product from '../db/models/Product';
 import Order from '../db/models/Order'
 
+import { ValidationError } from '../lib/errors';
+
+import { successResponse, errorResponse } from '../lib/apiout';
+
 const createCatalog = async (req, res) => {
+    // TODO add validation for items, should have price and name
     try {
         const { id } = req.user;
         const { items } = req.body;
-        // TODO add validation for items, should have price and name
         const user = await User.findOne({
             where: {
                 id: id,
@@ -18,7 +22,8 @@ const createCatalog = async (req, res) => {
             include: Seller
         });
         if (!user.Seller)
-            return res.status(403).json({ error: "Only Sellers are allowed to create catalog" });
+            throw new ValidationError('Only Sellers are allowed to create catalog', 403)
+        // return res.status(403).json({ error: "Only Sellers are allowed to create catalog" });
         const sellerId = user.Seller.id;
         const products = items.map(item => {
             return { SellerId: sellerId, name: item.name, price: item.price }
@@ -30,10 +35,11 @@ const createCatalog = async (req, res) => {
         const output = result.map(product => {
             return { productId: product.id, name: product.name, price: product.price }
         })
-        return res.status(201).json({ catalog: output });
+        return successResponse(201, { catalog: output }, res);
+        // return res.status(201).json({ catalog: output });
     } catch (err) {
-        console.log(err);
-        return res.status(500).json({ error: "Internal Server Error" });
+        console.log(err)
+        return errorResponse(err, res);
     }
 }
 
@@ -61,10 +67,11 @@ const getOrders = async (req, res) => {
                 placedOn: order.ceratedAt
             }
         })
-        return res.status(200).send(output);
+        return successResponse(200, output, res);
+        // return res.status(200).send(output);
     } catch (err) {
-        console.log(err);
-        return res.status(500).json({ error: "Internal Server Error" });
+        console.log(err)
+        return errorResponse(err, res);
     }
 }
 

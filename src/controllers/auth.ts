@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
 import User from '../db/models/User'
 import bcrypt from "bcrypt";
-
+import { successResponse, errorResponse } from '../lib/apiout';
+import { ValidationError } from '../lib/errors';
 
 const register = async (req: Request, res: Response) => {
     try {
@@ -14,7 +15,8 @@ const register = async (req: Request, res: Response) => {
       });
 
     if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
+      // return res.status(409).send("User Already Exist. Please Login");
+      throw new ValidationError('User Already Exist. Please Login',409)
     }
     const encryptedPassword = await bcrypt.hash(password, 10);
 
@@ -33,11 +35,12 @@ const register = async (req: Request, res: Response) => {
         expiresIn: "2h",
     }
     );
-    return res.status(201).json({ token,id:user.id });
+    return successResponse(201, { token,id:user.id }, res);
+    // return res.status(201).json({ token,id:user.id });
     }
     catch(err){
-        console.log(err);
-        return res.status(500).json({ error: "Internal Server Error" });
+      console.log(err)
+      return errorResponse(err as Error, res);
     }
 }
 
@@ -48,7 +51,8 @@ const login = async (req: Request, res: Response) => {
     
         // Validate user input
         if (!(username && password)) {
-          res.status(400).send("All input is required");
+          throw new ValidationError('Missing Inputs for Login',400) 
+          // res.status(400).send("All input is required");
         }
         // Validate if user exist in our database
         const user = await User.findOne({
@@ -66,12 +70,14 @@ const login = async (req: Request, res: Response) => {
               expiresIn: "2h",
             }
           );
-          return res.status(200).json({ token });
+          return successResponse(200, { token }, res);
+          // return res.status(200).json({ token });
         }
-        return res.status(400).send("Invalid Credentials");
+        return errorResponse(new ValidationError('Invalid Credentials',400),res)
+        // return res.status(400).send("Invalid Credentials");
       } catch (err) {
-        console.log(err);
-        return res.status(500).json({ error: "Internal Server Error" });
+        console.log(err)
+        return errorResponse(err as Error, res);
       }
 }
 

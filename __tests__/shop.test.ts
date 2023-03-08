@@ -152,10 +152,24 @@ describe("Invalid Requests", () => {
     expect(res.status).toEqual(403);
     expect(res.body.error).toBe('Only Sellers are allowed to create catalog')
   });
+
+  test("Creating Order with item not available with seller", async () => {
+  const res = await request(`${domain}:${port}`).post(`/api/buyer/create-order/1`)
+  .send({
+      items : [
+          {
+              id : 69,
+              quantity : 2
+          },
+      ]
+  })
+  .set('Authorization', `Bearer ${testUser.token}`)
+  expect(res.status).toEqual(400);
+  expect(res.body.error).toBe("One/More items not present with Seller")
+  });
 });
 
-// Note furthur Test cases can be added for the following cases
-// - Order created with no items
-// - User tries to create catalog
-// - Order invalid items from seller
-// - Fetch catalog of invalid seller 
+/* Note further Test cases can be added for the following cases
+ - Order created with no items - to be rejected by input Validation
+ - Order invalid items from seller
+*/ 

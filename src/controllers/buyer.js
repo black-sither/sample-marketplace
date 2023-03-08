@@ -8,9 +8,12 @@ import Product from '../db/models/Product';
 import Order from '../db/models/Order'
 import OrderItem from '../db/models/OrderItem'
 
+import { ValidationError } from '../lib/errors';
+import { successResponse, errorResponse } from '../lib/apiout';
+
+
 
 const createoOrder = async (req, res) => {
-    // TODO verify after catalog implementation
     // TODO add validation for quantity in itemsList
     try {
         const { id } = req.user;
@@ -36,8 +39,7 @@ const createoOrder = async (req, res) => {
             const unavailableItems = itemIds.filter((itemId) => !sellerItems[itemId])
             console.log(unavailableItems)
             if (unavailableItems.length > 0)
-                return res.status(400).json({ error: "Invalid items requested", unavailableItems, sellerItems }) // TODO throw error here
-
+                throw new ValidationError('One/More items not present with Seller', 400)
             const totalPrice = items.reduce((acc, item) => {
                 return acc + sellerItems[item.id].price * item.quantity;
             }, 0)
@@ -54,36 +56,40 @@ const createoOrder = async (req, res) => {
             return { orderId: order.id, totalPrice };
         });
         // const output = createdOrder.map(())
-        return res.status(201).json({ order: createdOrder });
+        return successResponse(201, { order: createdOrder }, res);
+        // return res.status(201).json({ order: createdOrder });
     } catch (err) {
         console.log(err)
-        return res.status(500).json({ error: "Internal Server Error" });
+        return errorResponse(err, res);
     }
 }
 
 const listSellers = async (req, res) => {
     try {
+        // console.log(apiout);
         const sellers = await Seller.findAll({ include: User });
         const sellerNames = sellers.map((seller) => {
             return { name: seller.User.username, sellerId: seller.id }
         })
-        return res.status(200).json({ sellers: sellerNames });
+        return successResponse(200, { sellers: sellerNames }, res);
+        // return res.status(200).json({ sellers: sellerNames });
     } catch (err) {
-        return res.status(500).json({ error: "Internal Server Error" });
+        console.log(err)
+        return errorResponse(err, res);
     }
 }
 
 const getSellerCatalog = async (req, res) => {
-    // TODO verify after catalog implementation
     try {
         const products = await Product.findAll({ where: { SellerId: req.params['seller_id'] } })
         const productsresults = products.map((product) => {
             return { "name": product.name, "price": product.price, "productId": product.id }
         })
-
-        return res.status(200).json({ catalog: productsresults });
+        return successResponse(200, { catalog: productsresults }, res);
+        // return res.status(200).json({ catalog: productsresults });
     } catch (err) {
-        return res.status(500).json({ error: "Internal Server Error" });
+        console.log(err)
+        return errorResponse(err, res);
     }
 }
 

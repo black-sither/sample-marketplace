@@ -32,4 +32,4 @@ We have chosen to use a SQL table (postgres) here as the data is relational in n
 - CI integration for linting and integration tests
 - Pagination of api responses
 - Error code as part of erroneous api responses
-- Dnamic environment configuration (e.g nconf)
+- Dynamic environment configuration (e.g nconf)
